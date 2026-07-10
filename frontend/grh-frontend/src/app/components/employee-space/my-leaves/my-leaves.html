@@ -1,0 +1,123 @@
+<div class="page-header">
+  <div>
+    <h1>Mes congés</h1>
+    <p>Gérez vos demandes de congé</p>
+  </div>
+  <button class="btn-add" (click)="showForm = !showForm">
+    <mat-icon>{{ showForm ? 'close' : 'add' }}</mat-icon>
+    {{ showForm ? 'Annuler' : 'Nouvelle demande' }}
+  </button>
+</div>
+
+<div class="balance-banner">
+  <div class="balance-left">
+    <div class="balance-icon">
+      <mat-icon>event_available</mat-icon>
+    </div>
+    <div>
+      <div class="balance-title">Solde de congés disponible</div>
+      <div class="balance-subtitle">Vous pouvez encore faire des demandes</div>
+    </div>
+  </div>
+  <div class="balance-right">
+    <span class="balance-value">{{ leaveBalance }}</span>
+    <span class="balance-unit">jours</span>
+  </div>
+</div>
+
+<div class="success-alert" *ngIf="successMessage">
+  <mat-icon>check_circle</mat-icon>
+  {{ successMessage }}
+</div>
+
+<div class="form-card" *ngIf="showForm">
+  <h3>Nouvelle demande de congé</h3>
+
+  <div class="form-grid">
+    <div class="field">
+      <label>Date de début *</label>
+      <input type="date" [(ngModel)]="newLeave.startDate" />
+    </div>
+    <div class="field">
+      <label>Date de fin *</label>
+      <input type="date" [(ngModel)]="newLeave.endDate" />
+    </div>
+    <div class="field">
+      <label>Type de congé</label>
+      <select [(ngModel)]="newLeave.leaveType">
+        <option *ngFor="let type of leaveTypes" [value]="type">
+          {{ getLeaveTypeLabel(type) }}
+        </option>
+      </select>
+    </div>
+    <div class="field full">
+      <label>Motif</label>
+      <textarea [(ngModel)]="newLeave.reason"
+        placeholder="Décrivez le motif de votre demande..." rows="3"></textarea>
+    </div>
+  </div>
+
+  <div class="error-box" *ngIf="errorMessage">
+    <mat-icon>error_outline</mat-icon>
+    {{ errorMessage }}
+  </div>
+
+  <div class="form-actions">
+    <button class="btn-cancel" (click)="showForm = false">Annuler</button>
+    <button class="btn-submit" (click)="submitLeave()" [disabled]="submitting">
+      <mat-icon *ngIf="submitting" class="spin">refresh</mat-icon>
+      {{ submitting ? 'Envoi...' : 'Envoyer la demande' }}
+    </button>
+  </div>
+</div>
+
+<div class="data-card">
+  <div class="card-header">
+    <h3>Historique de mes demandes</h3>
+    <span class="count-badge">{{ leaves.length }} demande(s)</span>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <mat-icon class="spin">refresh</mat-icon>
+    Chargement...
+  </div>
+
+  <table class="grh-table" *ngIf="!loading && leaves.length > 0">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Date début</th>
+        <th>Date fin</th>
+        <th>Jours</th>
+        <th>Motif</th>
+        <th>Demandé le</th>
+        <th>Statut</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let leave of leaves">
+        <td>{{ getLeaveTypeLabel(leave.leaveType) }}</td>
+        <td>{{ leave.startDate }}</td>
+        <td>{{ leave.endDate }}</td>
+        <td>
+          <span class="days-badge">{{ leave.daysRequested || '—' }} j</span>
+        </td>
+        <td>{{ leave.reason || '—' }}</td>
+        <td>{{ leave.requestedAt }}</td>
+        <td>
+          <span class="badge" [ngClass]="getStatusColor(leave.status)">
+            {{ getStatusLabel(leave.status) }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="empty-state" *ngIf="!loading && leaves.length === 0">
+    <mat-icon>event_busy</mat-icon>
+    <p>Aucune demande de congé</p>
+    <button class="btn-add-empty" (click)="showForm = true">
+      Faire une demande
+    </button>
+  </div>
+</div>

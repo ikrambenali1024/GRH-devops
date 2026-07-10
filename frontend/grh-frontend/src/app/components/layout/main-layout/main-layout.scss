@@ -1,0 +1,12 @@
+.page-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  margin-left: var(--sidebar-width);
+  flex: 1;
+  padding: 28px 32px;
+  background: #f5f6fa;
+  min-height: 100vh;
+}

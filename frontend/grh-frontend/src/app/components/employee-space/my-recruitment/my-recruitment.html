@@ -1,0 +1,104 @@
+<div class="page-header">
+  <div>
+    <h1>Offres d'emploi</h1>
+    <p>Consultez les offres et postulez en interne</p>
+  </div>
+</div>
+
+<div class="success-alert" *ngIf="successMessage">
+  <mat-icon>check_circle</mat-icon>
+  {{ successMessage }}
+</div>
+
+<div class="apply-form" *ngIf="selectedOffer">
+  <div class="apply-header">
+    <h3>Postuler : {{ selectedOffer.title }}</h3>
+    <button class="btn-close" (click)="selectedOffer = null">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="field">
+    <label>Lettre de motivation</label>
+    <textarea [(ngModel)]="motivation"
+      placeholder="Expliquez pourquoi vous êtes intéressé par ce poste..." rows="5"></textarea>
+  </div>
+  <div class="error-box" *ngIf="errorMessage">
+    <mat-icon>error_outline</mat-icon>
+    {{ errorMessage }}
+  </div>
+  <div class="form-actions">
+    <button class="btn-cancel" (click)="selectedOffer = null">Annuler</button>
+    <button class="btn-submit" (click)="apply()" [disabled]="applying">
+      <mat-icon *ngIf="applying" class="spin">refresh</mat-icon>
+      {{ applying ? 'Envoi...' : 'Envoyer ma candidature' }}
+    </button>
+  </div>
+</div>
+
+<div class="offers-grid" *ngIf="!loading">
+  <div class="offer-card" *ngFor="let offer of offers">
+    <div class="offer-top">
+      <div class="offer-icon">
+        <mat-icon>work</mat-icon>
+      </div>
+      <span class="badge badge-success">Ouverte</span>
+    </div>
+    <h3>{{ offer.title }}</h3>
+    <div class="offer-meta">
+      <span><mat-icon>business</mat-icon>{{ offer.department }}</span>
+      <span *ngIf="offer.location"><mat-icon>location_on</mat-icon>{{ offer.location }}</span>
+      <span *ngIf="offer.deadline"><mat-icon>event</mat-icon>Limite : {{ offer.deadline }}</span>
+    </div>
+    <p class="offer-desc">{{ offer.description }}</p>
+
+    <div class="offer-footer">
+      <span class="badge" [ngClass]="getStatusBadge(getAppStatus(offer.id))"
+        *ngIf="hasApplied(offer.id)">
+        {{ getStatusLabel(getAppStatus(offer.id)) }}
+      </span>
+      <button class="btn-apply" *ngIf="!hasApplied(offer.id)"
+        (click)="selectedOffer = offer">
+        <mat-icon>send</mat-icon>
+        Postuler
+      </button>
+      <span class="applied-label" *ngIf="hasApplied(offer.id)">
+        <mat-icon>check</mat-icon>
+        Déjà postulé
+      </span>
+    </div>
+  </div>
+
+  <div class="empty-state" *ngIf="offers.length === 0">
+    <mat-icon>work_off</mat-icon>
+    <p>Aucune offre disponible actuellement</p>
+  </div>
+</div>
+
+<div class="data-card" style="margin-top: 24px" *ngIf="myApplications.length > 0">
+  <div class="card-header">
+    <h3>Mes candidatures</h3>
+    <span class="count-badge">{{ myApplications.length }}</span>
+  </div>
+  <table class="grh-table">
+    <thead>
+      <tr>
+        <th>Poste</th>
+        <th>Département</th>
+        <th>Postulé le</th>
+        <th>Statut</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let app of myApplications">
+        <td>{{ app.jobOffer?.title }}</td>
+        <td>{{ app.jobOffer?.department }}</td>
+        <td>{{ app.appliedAt }}</td>
+        <td>
+          <span class="badge" [ngClass]="getStatusBadge(app.status)">
+            {{ getStatusLabel(app.status) }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

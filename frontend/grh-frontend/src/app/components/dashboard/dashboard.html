@@ -1,0 +1,132 @@
+<div class="page-header">
+  <div>
+    <h1>{{ getGreeting() }}, {{ username }} 👋</h1>
+    <p>{{ getToday() }}</p>
+  </div>
+  <button class="btn-primary" (click)="navigate('/employees/new')" *ngIf="role === 'RH'">
+    <mat-icon>person_add</mat-icon>
+    Ajouter un employé
+  </button>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card" (click)="navigate('/employees')" style="cursor:pointer">
+    <div class="stat-icon" style="background:#eff6ff">
+      <mat-icon style="color:#2563eb">people</mat-icon>
+    </div>
+    <div class="stat-label">Total employés</div>
+    <div class="stat-value">{{ totalEmployees }}</div>
+    <div class="stat-change positive">
+      <mat-icon style="font-size:14px;width:14px;height:14px">trending_up</mat-icon>
+      Voir tous
+    </div>
+  </div>
+
+  <div class="stat-card" (click)="navigate('/leaves')" style="cursor:pointer">
+    <div class="stat-icon" style="background:#fffbeb">
+      <mat-icon style="color:#d97706">event_busy</mat-icon>
+    </div>
+    <div class="stat-label">Congés en attente</div>
+    <div class="stat-value">{{ pendingLeaves }}</div>
+    <div class="stat-change" [class.warning]="pendingLeaves > 0" [class.positive]="pendingLeaves === 0">
+      <mat-icon style="font-size:14px;width:14px;height:14px">{{ pendingLeaves > 0 ? 'warning' : 'check_circle' }}</mat-icon>
+      {{ pendingLeaves > 0 ? 'À traiter' : 'Tout est traité' }}
+    </div>
+  </div>
+
+  <div class="stat-card" (click)="navigate('/attendance')" style="cursor:pointer">
+    <div class="stat-icon" style="background:#f0fdf4">
+      <mat-icon style="color:#16a34a">access_time</mat-icon>
+    </div>
+    <div class="stat-label">Présences aujourd'hui</div>
+    <div class="stat-value">{{ todayAttendances }}</div>
+    <div class="stat-change positive">
+      <mat-icon style="font-size:14px;width:14px;height:14px">trending_up</mat-icon>
+      Voir détails
+    </div>
+  </div>
+
+  <div class="stat-card" (click)="navigate('/departments')" style="cursor:pointer" *ngIf="role === 'ADMIN'">
+    <div class="stat-icon" style="background:#f5f3ff">
+      <mat-icon style="color:#7c3aed">business</mat-icon>
+    </div>
+    <div class="stat-label">Départements</div>
+    <div class="stat-value">—</div>
+    <div class="stat-change positive">
+      <mat-icon style="font-size:14px;width:14px;height:14px">arrow_forward</mat-icon>
+      Gérer
+    </div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="data-card">
+    <div class="card-header">
+      <h3>Employés récents</h3>
+      <button class="btn-link" (click)="navigate('/employees')">
+        Voir tous <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+    <table class="grh-table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Poste</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let emp of recentEmployees; let i = index">
+          <td>
+            <div class="emp-cell">
+              <div class="avatar-circle"
+                [style.background]="getAvatarColor(i)"
+                [style.color]="getAvatarTextColor(i)">
+                {{ getInitials(emp.firstName, emp.lastName) }}
+              </div>
+              <span>{{ emp.firstName }} {{ emp.lastName }}</span>
+            </div>
+          </td>
+          <td>{{ emp.jobTitle }}</td>
+          <td>
+            <span class="badge" [ngClass]="{
+              'badge-success': emp.status === 'ACTIVE',
+              'badge-warning': emp.status === 'ON_LEAVE',
+              'badge-danger': emp.status === 'INACTIVE'
+            }">{{ emp.status }}</span>
+          </td>
+        </tr>
+        <tr *ngIf="recentEmployees.length === 0">
+          <td colspan="3" style="text-align:center;color:#9ca3af;padding:24px">
+            Aucun employé
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="data-card" *ngIf="role === 'ADMIN'">
+    <div class="card-header">
+      <h3>Congés en attente</h3>
+      <button class="btn-link" (click)="navigate('/leaves')">
+        Voir tous <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+    <div class="leave-list">
+      <div class="leave-item" *ngFor="let leave of pendingLeavesList">
+        <div class="leave-avatar">
+          {{ getInitials(leave.employee?.firstName, leave.employee?.lastName) }}
+        </div>
+        <div class="leave-info">
+          <span class="leave-name">{{ leave.employee?.firstName }} {{ leave.employee?.lastName }}</span>
+          <span class="leave-dates">{{ leave.startDate }} → {{ leave.endDate }}</span>
+        </div>
+        <span class="badge badge-warning">{{ leave.leaveType }}</span>
+      </div>
+      <div class="empty-leave" *ngIf="pendingLeavesList.length === 0">
+        <mat-icon>check_circle</mat-icon>
+        <p>Aucun congé en attente</p>
+      </div>
+    </div>
+  </div>
+</div>

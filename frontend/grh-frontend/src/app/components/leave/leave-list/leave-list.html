@@ -1,0 +1,69 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span>Gestion des Congés</span>
+</mat-toolbar>
+
+<div class="container">
+  <div *ngIf="loading" class="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <table mat-table [dataSource]="leaves" *ngIf="!loading" class="mat-elevation-z2">
+
+    <ng-container matColumnDef="employee">
+      <th mat-header-cell *matHeaderCellDef>Employé</th>
+      <td mat-cell *matCellDef="let leave">
+        {{ leave.employee?.firstName }} {{ leave.employee?.lastName }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="startDate">
+      <th mat-header-cell *matHeaderCellDef>Début</th>
+      <td mat-cell *matCellDef="let leave">{{ leave.startDate }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="endDate">
+      <th mat-header-cell *matHeaderCellDef>Fin</th>
+      <td mat-cell *matCellDef="let leave">{{ leave.endDate }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="leaveType">
+      <th mat-header-cell *matHeaderCellDef>Type</th>
+      <td mat-cell *matCellDef="let leave">{{ leave.leaveType }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Statut</th>
+      <td mat-cell *matCellDef="let leave">
+        <mat-chip [color]="getStatusColor(leave.status)" selected>
+          {{ leave.status }}
+        </mat-chip>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let leave">
+        <button mat-icon-button color="primary"
+          *ngIf="leave.status === 'PENDING'"
+          (click)="approve(leave.id)">
+          <mat-icon>check_circle</mat-icon>
+        </button>
+        <button mat-icon-button color="warn"
+          *ngIf="leave.status === 'PENDING'"
+          (click)="reject(leave.id)">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <p *ngIf="!loading && leaves.length === 0" class="empty">
+    Aucune demande de congé trouvée.
+  </p>
+</div>

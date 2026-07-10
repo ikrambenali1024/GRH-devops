@@ -1,0 +1,141 @@
+<div class="page-header">
+  <div>
+    <h1>Paramètres</h1>
+    <p>Gérez votre compte et vos préférences</p>
+  </div>
+</div>
+
+<div class="settings-layout">
+  <div class="settings-sidebar">
+    <div class="settings-nav-item" [class.active]="activeTab === 'profile'" (click)="activeTab = 'profile'">
+      <mat-icon>person_outline</mat-icon>
+      Mon profil
+    </div>
+    <div class="settings-nav-item" [class.active]="activeTab === 'password'" (click)="activeTab = 'password'">
+      <mat-icon>lock_outline</mat-icon>
+      Mot de passe
+    </div>
+    <div class="settings-nav-item" *ngIf="role === 'ADMIN'" [class.active]="activeTab === 'users'" (click)="activeTab = 'users'">
+      <mat-icon>manage_accounts</mat-icon>
+      Utilisateurs
+    </div>
+  </div>
+
+  <div class="settings-content">
+
+    <!-- Profil -->
+    <div *ngIf="activeTab === 'profile'">
+      <div class="data-card">
+        <div class="card-header">
+          <h3>Informations du profil</h3>
+        </div>
+        <div class="profile-content">
+          <div class="profile-avatar">
+            {{ username.substring(0, 2).toUpperCase() }}
+          </div>
+          <div class="profile-info">
+            <div class="info-row">
+              <span class="info-label">Nom d'utilisateur</span>
+              <span class="info-value">{{ username }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Rôle</span>
+              <span class="badge" [ngClass]="getRoleBadge(role)">{{ getRoleLabel(role) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mot de passe -->
+    <div *ngIf="activeTab === 'password'">
+      <div class="data-card">
+        <div class="card-header">
+          <h3>Changer le mot de passe</h3>
+        </div>
+        <div class="form-content">
+          <div class="field">
+            <label>Mot de passe actuel</label>
+            <div class="input-box">
+              <mat-icon>lock_outline</mat-icon>
+              <input type="password" [(ngModel)]="currentPassword" placeholder="Votre mot de passe actuel" />
+            </div>
+          </div>
+          <div class="field">
+            <label>Nouveau mot de passe</label>
+            <div class="input-box">
+              <mat-icon>lock_reset</mat-icon>
+              <input type="password" [(ngModel)]="newPassword" placeholder="Nouveau mot de passe" />
+            </div>
+          </div>
+          <div class="field">
+            <label>Confirmer le mot de passe</label>
+            <div class="input-box">
+              <mat-icon>lock_reset</mat-icon>
+              <input type="password" [(ngModel)]="confirmPassword" placeholder="Confirmer le mot de passe" />
+            </div>
+          </div>
+
+          <div class="success-alert" *ngIf="passwordSuccess">
+            <mat-icon>check_circle</mat-icon>
+            {{ passwordSuccess }}
+          </div>
+
+          <div class="error-box" *ngIf="passwordError">
+            <mat-icon>error_outline</mat-icon>
+            {{ passwordError }}
+          </div>
+
+          <button class="btn-save" (click)="changePassword()" [disabled]="passwordLoading">
+            <mat-icon *ngIf="passwordLoading" class="spin">refresh</mat-icon>
+            {{ passwordLoading ? 'Enregistrement...' : 'Changer le mot de passe' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Utilisateurs (Admin seulement) -->
+    <div *ngIf="activeTab === 'users' && role === 'ADMIN'">
+      <div class="data-card">
+        <div class="card-header">
+          <h3>Gestion des utilisateurs</h3>
+          <span class="count-badge">{{ users.length }} utilisateur(s)</span>
+        </div>
+
+        <div class="loading" *ngIf="usersLoading">
+          <mat-icon class="spin">refresh</mat-icon>
+          Chargement...
+        </div>
+
+        <table class="grh-table" *ngIf="!usersLoading && users.length > 0">
+          <thead>
+            <tr>
+              <th>Nom d'utilisateur</th>
+              <th>Email</th>
+              <th>Rôle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>
+                <div class="user-cell">
+                  <div class="avatar-circle" style="background:#eff6ff;color:#2563eb">
+                    {{ user.username.substring(0, 2).toUpperCase() }}
+                  </div>
+                  {{ user.username }}
+                </div>
+              </td>
+              <td>{{ user.email }}</td>
+              <td>
+                <span class="badge" [ngClass]="getRoleBadge(user.role)">
+                  {{ getRoleLabel(user.role) }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

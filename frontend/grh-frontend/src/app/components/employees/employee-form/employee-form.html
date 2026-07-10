@@ -1,0 +1,91 @@
+<div class="container">
+  <mat-card>
+    <mat-card-content>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Prénom*</mat-label>
+          <input matInput [(ngModel)]="employee.firstName" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nom*</mat-label>
+          <input matInput [(ngModel)]="employee.lastName" required />
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email*</mat-label>
+        <input matInput type="email" [(ngModel)]="employee.email" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Téléphone</mat-label>
+        <input matInput [(ngModel)]="employee.phoneNumber" />
+      </mat-form-field>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Poste</mat-label>
+          <input matInput [(ngModel)]="employee.jobTitle" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Date d'embauche</mat-label>
+          <input matInput type="date" [(ngModel)]="employee.hireDate" />
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Statut</mat-label>
+          <mat-select [(ngModel)]="employee.status">
+            <mat-option *ngFor="let s of statuses" [value]="s">{{ s }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Département</mat-label>
+          <mat-select [(ngModel)]="selectedDepartmentId">
+            <mat-option [value]="null">— Aucun département —</mat-option>
+            <mat-option *ngFor="let dept of departments" [value]="dept.id">
+              {{ dept.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <ng-container *ngIf="!isEditMode">
+        <mat-divider style="margin: 16px 0;"></mat-divider>
+        <p style="font-weight: 500; margin-bottom: 12px;">
+          <mat-icon style="vertical-align: middle; margin-right: 6px;">lock</mat-icon>
+          Compte de connexion
+        </p>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nom d'utilisateur*</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput [(ngModel)]="username" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Mot de passe*</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input matInput type="password" [(ngModel)]="password" required />
+        </mat-form-field>
+      </ng-container>
+
+      <div class="error-message" *ngIf="errorMessage">
+        <mat-icon>error</mat-icon> {{ errorMessage }}
+      </div>
+
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-button (click)="goBack()">Annuler</button>
+      <button mat-raised-button color="primary" (click)="save()" [disabled]="loading">
+        {{ loading ? 'Enregistrement...' : 'Enregistrer' }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

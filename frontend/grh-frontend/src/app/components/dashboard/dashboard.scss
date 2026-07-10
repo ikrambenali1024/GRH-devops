@@ -1,0 +1,126 @@
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+
+  h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 3px;
+    text-transform: capitalize;
+  }
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  background: #1e2640;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+  &:hover { background: #2d3a5c; }
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.btn-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+
+  mat-icon { font-size: 14px; width: 14px; height: 14px; }
+  &:hover { text-decoration: underline; }
+}
+
+.emp-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.leave-list {
+  padding: 8px 0;
+}
+
+.leave-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f3f4f6;
+
+  &:last-child { border-bottom: none; }
+}
+
+.leave-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #fffbeb;
+  color: #d97706;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.leave-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  .leave-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .leave-dates {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+}
+
+.empty-leave {
+  text-align: center;
+  padding: 32px;
+  color: var(--text-secondary);
+
+  mat-icon {
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+    color: #16a34a;
+    opacity: 0.5;
+    margin-bottom: 8px;
+  }
+
+  p { font-size: 13px; }
+}

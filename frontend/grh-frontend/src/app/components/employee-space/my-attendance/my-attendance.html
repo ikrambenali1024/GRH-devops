@@ -1,0 +1,84 @@
+<div class="page-header">
+  <div>
+    <h1>Mes présences</h1>
+    <p>Pointez votre arrivée et votre départ</p>
+  </div>
+</div>
+
+<div class="checkin-card">
+  <div class="checkin-status">
+    <div class="status-icon" [class.active]="hasCheckedInToday && !hasCheckedOutToday">
+      <mat-icon>{{ hasCheckedOutToday ? 'check_circle' : (hasCheckedInToday ? 'schedule' : 'access_time') }}</mat-icon>
+    </div>
+    <div class="status-text">
+      <h3 *ngIf="!hasCheckedInToday">Vous n'avez pas encore pointé aujourd'hui</h3>
+      <h3 *ngIf="hasCheckedInToday && !hasCheckedOutToday">Vous êtes actuellement présent</h3>
+      <h3 *ngIf="hasCheckedOutToday">Votre journée est terminée</h3>
+      <p>{{ getToday() }}</p>
+    </div>
+  </div>
+
+  <div class="checkin-actions">
+    <button
+      class="btn-checkin"
+      *ngIf="!hasCheckedInToday"
+      (click)="checkIn()"
+      [disabled]="checkingIn">
+      <mat-icon>login</mat-icon>
+      {{ checkingIn ? 'Pointage...' : 'Check-in' }}
+    </button>
+
+    <button
+      class="btn-checkout"
+      *ngIf="hasCheckedInToday && !hasCheckedOutToday"
+      (click)="checkOut()"
+      [disabled]="checkingOut">
+      <mat-icon>logout</mat-icon>
+      {{ checkingOut ? 'Pointage...' : 'Check-out' }}
+    </button>
+
+    <div class="done-badge" *ngIf="hasCheckedOutToday">
+      <mat-icon>check_circle</mat-icon>
+      Pointage complété
+    </div>
+  </div>
+</div>
+
+<div class="data-card">
+  <div class="card-header">
+    <h3>Historique de mes présences</h3>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <mat-icon class="spin">refresh</mat-icon>
+    Chargement...
+  </div>
+
+  <table class="grh-table" *ngIf="!loading && attendances.length > 0">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Arrivée</th>
+        <th>Départ</th>
+        <th>Statut</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let att of attendances">
+        <td>{{ att.attendanceDate }}</td>
+        <td>{{ att.checkIn }}</td>
+        <td>{{ att.checkOut || '—' }}</td>
+        <td>
+          <span class="badge badge-success" *ngIf="att.status === 'PRESENT'">Présent</span>
+          <span class="badge badge-danger" *ngIf="att.status === 'ABSENT'">Absent</span>
+          <span class="badge badge-warning" *ngIf="att.status === 'LATE'">En retard</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="empty-state" *ngIf="!loading && attendances.length === 0">
+    <mat-icon>access_time</mat-icon>
+    <p>Aucun pointage enregistré</p>
+  </div>
+</div>

@@ -1,0 +1,129 @@
+<div class="page-header">
+  <div>
+    <h1>{{ getGreeting() }}, {{ username }} 👋</h1>
+    <p>{{ getToday() }}</p>
+  </div>
+</div>
+
+<div class="quick-status" [class.checked-in]="hasCheckedInToday && !hasCheckedOutToday" [class.done]="hasCheckedOutToday">
+  <div class="status-left">
+    <mat-icon>{{ hasCheckedOutToday ? 'check_circle' : (hasCheckedInToday ? 'schedule' : 'access_time') }}</mat-icon>
+    <div>
+      <h3 *ngIf="!hasCheckedInToday">Vous n'avez pas encore pointé</h3>
+      <h3 *ngIf="hasCheckedInToday && !hasCheckedOutToday">Vous êtes présent depuis ce matin</h3>
+      <h3 *ngIf="hasCheckedOutToday">Journée terminée</h3>
+      <p>Rendez-vous sur "Mes présences" pour pointer</p>
+    </div>
+  </div>
+  <button class="btn-go" (click)="navigate('/my-attendance')">
+    Pointer maintenant
+    <mat-icon>arrow_forward</mat-icon>
+  </button>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card" (click)="navigate('/my-leaves')" style="cursor:pointer">
+    <div class="stat-icon" style="background:#fffbeb">
+      <mat-icon style="color:#d97706">pending_actions</mat-icon>
+    </div>
+    <div class="stat-label">Congés en attente</div>
+    <div class="stat-value">{{ pendingLeavesCount }}</div>
+    <div class="stat-change warning">
+      <mat-icon style="font-size:14px;width:14px;height:14px">visibility</mat-icon>
+      Voir le statut
+    </div>
+  </div>
+
+  <div class="stat-card" (click)="navigate('/my-leaves')" style="cursor:pointer">
+    <div class="stat-icon" style="background:#f0fdf4">
+      <mat-icon style="color:#16a34a">event_available</mat-icon>
+    </div>
+    <div class="stat-label">Congés approuvés</div>
+    <div class="stat-value">{{ approvedLeavesCount }}</div>
+    <div class="stat-change positive">
+      <mat-icon style="font-size:14px;width:14px;height:14px">check_circle</mat-icon>
+      Cette année
+    </div>
+  </div>
+
+  <div class="stat-card" (click)="navigate('/my-attendance')" style="cursor:pointer">
+    <div class="stat-icon" style="background:#eff6ff">
+      <mat-icon style="color:#2563eb">calendar_month</mat-icon>
+    </div>
+    <div class="stat-label">Total pointages</div>
+    <div class="stat-value">{{ myAttendances.length }}</div>
+    <div class="stat-change positive">
+      <mat-icon style="font-size:14px;width:14px;height:14px">history</mat-icon>
+      Voir l'historique
+    </div>
+  </div>
+
+  <div class="stat-card" (click)="navigate('/my-leaves')" style="cursor:pointer">
+    <div class="stat-icon" style="background:#f5f3ff">
+      <mat-icon style="color:#7c3aed">event_available</mat-icon>
+    </div>
+    <div class="stat-label">Solde de congés</div>
+    <div class="stat-value">{{ leaveBalance }}</div>
+    <div class="stat-change positive">
+      <mat-icon style="font-size:14px;width:14px;height:14px">info</mat-icon>
+      Jours disponibles
+    </div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="data-card">
+    <div class="card-header">
+      <h3>Mes dernières demandes de congé</h3>
+      <button class="btn-link" (click)="navigate('/my-leaves')">
+        Voir tout <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+    <div class="leave-list">
+      <div class="leave-item" *ngFor="let leave of myLeaves">
+        <div class="leave-icon" [ngClass]="{
+          'icon-pending': leave.status === 'PENDING',
+          'icon-approved': leave.status === 'APPROVED',
+          'icon-rejected': leave.status === 'REJECTED'
+        }">
+          <mat-icon>{{ leave.status === 'APPROVED' ? 'check' : (leave.status === 'REJECTED' ? 'close' : 'schedule') }}</mat-icon>
+        </div>
+        <div class="leave-info">
+          <span class="leave-type">{{ leave.leaveType }}</span>
+          <span class="leave-dates">{{ leave.startDate }} → {{ leave.endDate }}</span>
+        </div>
+        <span class="badge" [ngClass]="{
+          'badge-warning': leave.status === 'PENDING',
+          'badge-success': leave.status === 'APPROVED',
+          'badge-danger': leave.status === 'REJECTED'
+        }">{{ leave.status }}</span>
+      </div>
+      <div class="empty-leave" *ngIf="myLeaves.length === 0">
+        <mat-icon>event_available</mat-icon>
+        <p>Aucune demande de congé</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="card-header">
+      <h3>Actions rapides</h3>
+    </div>
+    <div class="quick-actions">
+      <div class="action-item" (click)="navigate('/my-leaves')">
+        <mat-icon>add_circle_outline</mat-icon>
+        <div>
+          <h4>Demander un congé</h4>
+          <p>Créer une nouvelle demande</p>
+        </div>
+      </div>
+      <div class="action-item" (click)="navigate('/my-attendance')">
+        <mat-icon>access_time</mat-icon>
+        <div>
+          <h4>Pointer ma présence</h4>
+          <p>Check-in / Check-out</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

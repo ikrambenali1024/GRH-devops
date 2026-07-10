@@ -1,0 +1,132 @@
+<div class="page-header">
+  <div>
+    <h1>{{ getGreeting() }}, {{ username }} 👋</h1>
+    <p>{{ getToday() }}</p>
+  </div>
+  <button class="btn-primary" (click)="navigate('/employees/new')">
+    <mat-icon>person_add</mat-icon>
+    Ajouter un employé
+  </button>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card" (click)="navigate('/employees')" style="cursor:pointer">
+    <div class="stat-icon" style="background:#eff6ff">
+      <mat-icon style="color:#2563eb">people</mat-icon>
+    </div>
+    <div class="stat-label">Total employés</div>
+    <div class="stat-value">{{ totalEmployees }}</div>
+    <div class="stat-change positive">
+      <mat-icon style="font-size:14px;width:14px;height:14px">arrow_forward</mat-icon>
+      Voir tous
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon" style="background:#f0fdf4">
+      <mat-icon style="color:#16a34a">how_to_reg</mat-icon>
+    </div>
+    <div class="stat-label">Employés actifs</div>
+    <div class="stat-value">{{ activeEmployees }}</div>
+    <div class="stat-change positive">
+      <mat-icon style="font-size:14px;width:14px;height:14px">check_circle</mat-icon>
+      En activité
+    </div>
+  </div>
+
+  <div class="stat-card" (click)="navigate('/attendance')" style="cursor:pointer">
+    <div class="stat-icon" style="background:#fffbeb">
+      <mat-icon style="color:#d97706">access_time</mat-icon>
+    </div>
+    <div class="stat-label">Présences aujourd'hui</div>
+    <div class="stat-value">{{ todayAttendances }}</div>
+    <div class="stat-change positive">
+      <mat-icon style="font-size:14px;width:14px;height:14px">arrow_forward</mat-icon>
+      Voir détails
+    </div>
+  </div>
+
+  <div class="stat-card" (click)="navigate('/recruitment')" style="cursor:pointer">
+    <div class="stat-icon" style="background:#f5f3ff">
+      <mat-icon style="color:#7c3aed">work</mat-icon>
+    </div>
+    <div class="stat-label">Recrutement</div>
+    <div class="stat-value">—</div>
+    <div class="stat-change positive">
+      <mat-icon style="font-size:14px;width:14px;height:14px">arrow_forward</mat-icon>
+      Gérer
+    </div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="data-card">
+    <div class="card-header">
+      <h3>Employés récents</h3>
+      <button class="btn-link" (click)="navigate('/employees')">
+        Voir tous <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+    <table class="grh-table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Poste</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let emp of recentEmployees; let i = index">
+          <td>
+            <div class="emp-cell">
+              <div class="avatar-circle"
+                [style.background]="getAvatarColor(i)"
+                [style.color]="getAvatarTextColor(i)">
+                {{ getInitials(emp.firstName, emp.lastName) }}
+              </div>
+              <span>{{ emp.firstName }} {{ emp.lastName }}</span>
+            </div>
+          </td>
+          <td>{{ emp.jobTitle || '—' }}</td>
+          <td>
+            <span class="badge" [ngClass]="{
+              'badge-success': emp.status === 'ACTIVE',
+              'badge-warning': emp.status === 'ON_LEAVE',
+              'badge-danger': emp.status === 'INACTIVE' || emp.status === 'TERMINATED'
+            }">{{ emp.status }}</span>
+          </td>
+        </tr>
+        <tr *ngIf="recentEmployees.length === 0">
+          <td colspan="3" style="text-align:center;color:#9ca3af;padding:24px">
+            Aucun employé
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="data-card">
+    <div class="card-header">
+      <h3>Présences du jour</h3>
+      <button class="btn-link" (click)="navigate('/attendance')">
+        Voir tous <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+    <div class="attendance-list">
+      <div class="attendance-item" *ngFor="let att of todayAttendanceList.slice(0, 5)">
+        <div class="att-avatar">
+          {{ getInitials(att.employee?.firstName, att.employee?.lastName) }}
+        </div>
+        <div class="att-info">
+          <span class="att-name">{{ att.employee?.firstName }} {{ att.employee?.lastName }}</span>
+          <span class="att-time">Arrivée : {{ att.checkIn }}</span>
+        </div>
+        <span class="badge badge-success">Présent</span>
+      </div>
+      <div class="empty-state" *ngIf="todayAttendanceList.length === 0">
+        <mat-icon>access_time</mat-icon>
+        <p>Aucune présence aujourd'hui</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<div class="page-header">
+  <div>
+    <h1>Départements</h1>
+    <p>Gérer les départements de l'entreprise</p>
+  </div>
+  <button class="btn-add" (click)="showForm = !showForm">
+    <mat-icon>add</mat-icon>
+    Nouveau département
+  </button>
+</div>
+
+<div class="form-card" *ngIf="showForm">
+  <h3>Nouveau département</h3>
+  <div class="form-row">
+    <div class="field">
+      <label>Nom</label>
+      <input type="text" [(ngModel)]="newDepartment.name" placeholder="Ex: Informatique" />
+    </div>
+    <div class="field">
+      <label>Description</label>
+      <input type="text" [(ngModel)]="newDepartment.description" placeholder="Description..." />
+    </div>
+  </div>
+  <div class="form-actions">
+    <button class="btn-cancel" (click)="showForm = false">Annuler</button>
+    <button class="btn-save" (click)="createDepartment()">Enregistrer</button>
+  </div>
+</div>
+
+<div class="loading" *ngIf="loading">
+  <mat-icon class="spin">refresh</mat-icon>
+  Chargement...
+</div>
+
+<div class="dept-grid" *ngIf="!loading">
+  <div class="dept-card" *ngFor="let dept of departments">
+    <div class="dept-icon">
+      <mat-icon>business</mat-icon>
+    </div>
+    <div class="dept-info">
+      <h3>{{ dept.name }}</h3>
+      <p>{{ dept.description || 'Aucune description' }}</p>
+    </div>
+    <button class="delete-btn" (click)="deleteDepartment(dept.id)">
+      <mat-icon>delete_outline</mat-icon>
+    </button>
+  </div>
+
+  <div class="empty-state" *ngIf="departments.length === 0">
+    <mat-icon>business</mat-icon>
+    <p>Aucun département trouvé</p>
+  </div>
+</div>
