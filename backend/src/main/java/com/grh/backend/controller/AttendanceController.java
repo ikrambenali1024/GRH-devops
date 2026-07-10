@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -51,5 +52,21 @@ public class AttendanceController {
             @PathVariable Long id,
             @RequestParam AttendanceStatus status) {
         return ResponseEntity.ok(attendanceService.updateStatus(id, status));
+    }
+
+    @GetMapping("/my-attendances")
+    public ResponseEntity<List<Attendance>> getMyAttendances(Principal principal) {
+        return ResponseEntity.ok(attendanceService.getAttendancesByUsername(principal.getName()));
+    }
+
+    @PostMapping("/my-checkin")
+    public ResponseEntity<Attendance> myCheckIn(Principal principal) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(attendanceService.checkInByUsername(principal.getName()));
+    }
+
+    @PatchMapping("/my-checkout")
+    public ResponseEntity<Attendance> myCheckOut(Principal principal) {
+        return ResponseEntity.ok(attendanceService.checkOutByUsername(principal.getName()));
     }
 }

@@ -44,4 +44,6 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
+    @Column(name = "leave_balance")
+    private Integer leaveBalance = 30;
 }

@@ -2,13 +2,16 @@ package com.grh.backend.service;
 
 import com.grh.backend.entity.Attendance;
 import com.grh.backend.entity.AttendanceStatus;
+import com.grh.backend.entity.User;
 import com.grh.backend.repository.AttendanceRepository;
 import com.grh.backend.repository.EmployeeRepository;
+import com.grh.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,6 +20,7 @@ public class AttendanceService {
 
     private final AttendanceRepository attendanceRepository;
     private final EmployeeRepository employeeRepository;
+    private final UserRepository userRepository;
 
     public List<Attendance> getAllAttendances() {
         return attendanceRepository.findAll();
@@ -63,5 +67,32 @@ public class AttendanceService {
                 .orElseThrow(() -> new EntityNotFoundException("Pointage non trouvé avec l'id : " + id));
         attendance.setStatus(status);
         return attendanceRepository.save(attendance);
+    }
+
+    public List<Attendance> getAttendancesByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("User non trouvé"));
+        if (user.getEmployee() == null) {
+            return new ArrayList<>();
+        }
+        return attendanceRepository.findByEmployeeId(user.getEmployee().getId());
+    }
+
+    public Attendance checkInByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("User non trouvé"));
+        if (user.getEmployee() == null) {
+            throw new RuntimeException("Aucun employé lié à ce compte");
+        }
+        return checkIn(user.getEmployee().getId());
+    }
+
+    public Attendance checkOutByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("User non trouvé"));
+        if (user.getEmployee() == null) {
+            throw new RuntimeException("Aucun employé lié à ce compte");
+        }
+        return checkOut(user.getEmployee().getId());
     }
 }

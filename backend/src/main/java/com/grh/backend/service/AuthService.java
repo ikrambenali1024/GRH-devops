@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.grh.backend.repository.EmployeeRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +19,9 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final EmployeeRepository employeeRepository;
 
-    public String register(String username, String email, String password, Role role) {
+    public String register(String username, String email, String password, Role role, Long employeeId) {
         if (userRepository.existsByUsername(username)) {
             throw new RuntimeException("Ce nom d'utilisateur existe déjà");
         }
@@ -34,10 +36,13 @@ public class AuthService {
                 .role(role)
                 .build();
 
+        if (employeeId != null) {
+            employeeRepository.findById(employeeId).ifPresent(user::setEmployee);
+        }
+
         userRepository.save(user);
         return jwtService.generateToken(user);
     }
-
     public String login(String username, String password) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password)

@@ -41,4 +41,6 @@ public class LeaveRequest {
 
     @Column(name = "requested_at")
     private LocalDate requestedAt;
+    @Column(name = "days_requested")
+    private Integer daysRequested;
 }

@@ -22,7 +22,8 @@ public class AuthController {
                 request.getUsername(),
                 request.getEmail(),
                 request.getPassword(),
-                request.getRole()
+                request.getRole(),
+                request.getEmployeeId()
         );
         return ResponseEntity.ok(Map.of("token", token));
     }
