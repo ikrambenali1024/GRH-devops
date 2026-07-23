@@ -1,0 +1,94 @@
+<div class="auth-container">
+  <div class="auth-left">
+    <div class="auth-brand">
+      <div class="brand-icon">
+        <mat-icon>corporate_fare</mat-icon>
+      </div>
+      <h1>GRH Platform</h1>
+      <p>Gestion des Ressources Humaines</p>
+    </div>
+
+    <div class="auth-features">
+      <div class="feature-item">
+        <div class="feature-icon">
+          <mat-icon>people</mat-icon>
+        </div>
+        <div class="feature-text">
+          <h3>Gestion des employés</h3>
+          <p>Gérez vos équipes efficacement</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <mat-icon>event_busy</mat-icon>
+        </div>
+        <div class="feature-text">
+          <h3>Gestion des congés</h3>
+          <p>Suivez et approuvez les demandes</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <mat-icon>access_time</mat-icon>
+        </div>
+        <div class="feature-text">
+          <h3>Suivi des présences</h3>
+          <p>Pointage en temps réel</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-right">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h2>Connexion</h2>
+        <p>Entrez vos identifiants pour accéder à votre espace</p>
+      </div>
+
+      <div class="form-group">
+        <label>Nom d'utilisateur</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">person_outline</mat-icon>
+          <input
+            type="text"
+            [(ngModel)]="username"
+            placeholder="Votre nom d'utilisateur"
+            (keyup.enter)="login()" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">lock_outline</mat-icon>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            [(ngModel)]="password"
+            placeholder="Votre mot de passe"
+            (keyup.enter)="login()" />
+          <mat-icon class="input-toggle" (click)="showPassword = !showPassword">
+            {{ showPassword ? 'visibility_off' : 'visibility' }}
+          </mat-icon>
+        </div>
+      </div>
+
+      <div class="error-alert" *ngIf="errorMessage">
+        <mat-icon>error_outline</mat-icon>
+        {{ errorMessage }}
+      </div>
+
+      <button class="btn-login" (click)="login()" [disabled]="loading">
+        <span *ngIf="!loading">Se connecter</span>
+        <span *ngIf="loading" class="loading-text">
+          <mat-icon class="spin">refresh</mat-icon>
+          Connexion...
+        </span>
+      </button>
+
+      <div class="auth-footer">
+        <p>© 2026 GRH Platform. Tous droits réservés.</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,134 @@
+<div class="page-header">
+  <div>
+    <h1>Recrutement interne</h1>
+    <p>Gérez les offres et les candidatures</p>
+  </div>
+  <button class="btn-add" (click)="showForm = !showForm">
+    <mat-icon>{{ showForm ? 'close' : 'add' }}</mat-icon>
+    {{ showForm ? 'Annuler' : 'Nouvelle offre' }}
+  </button>
+</div>
+
+<div class="success-alert" *ngIf="successMessage">
+  <mat-icon>check_circle</mat-icon>
+  {{ successMessage }}
+</div>
+
+<div class="form-card" *ngIf="showForm">
+  <h3>Créer une offre d'emploi</h3>
+  <div class="form-grid">
+    <div class="field">
+      <label>Titre du poste *</label>
+      <input type="text" [(ngModel)]="newOffer.title" placeholder="Ex: Développeur Full Stack" />
+    </div>
+    <div class="field">
+      <label>Département *</label>
+      <input type="text" [(ngModel)]="newOffer.department" placeholder="Ex: Informatique" />
+    </div>
+    <div class="field">
+      <label>Localisation</label>
+      <input type="text" [(ngModel)]="newOffer.location" placeholder="Ex: Tunis" />
+    </div>
+    <div class="field">
+      <label>Date limite</label>
+      <input type="date" [(ngModel)]="newOffer.deadline" />
+    </div>
+    <div class="field full">
+      <label>Description</label>
+      <textarea [(ngModel)]="newOffer.description"
+        placeholder="Décrivez le poste, les responsabilités..." rows="4"></textarea>
+    </div>
+  </div>
+  <div class="form-actions">
+    <button class="btn-cancel" (click)="showForm = false">Annuler</button>
+    <button class="btn-submit" (click)="createOffer()">Créer l'offre</button>
+  </div>
+</div>
+
+<div class="recruitment-layout">
+  <div class="offers-panel">
+    <div class="panel-header">
+      <h3>Offres d'emploi</h3>
+      <span class="count-badge">{{ offers.length }}</span>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+      <mat-icon class="spin">refresh</mat-icon>
+      Chargement...
+    </div>
+
+    <div class="offer-card" *ngFor="let offer of offers"
+      [class.selected]="selectedOfferId === offer.id"
+      (click)="loadApplications(offer.id)">
+      <div class="offer-header">
+        <h4>{{ offer.title }}</h4>
+        <span class="badge" [ngClass]="getStatusBadge(offer.status)">
+          {{ getStatusLabel(offer.status) }}
+        </span>
+      </div>
+      <div class="offer-meta">
+        <span><mat-icon>business</mat-icon>{{ offer.department }}</span>
+        <span *ngIf="offer.location"><mat-icon>location_on</mat-icon>{{ offer.location }}</span>
+        <span *ngIf="offer.deadline"><mat-icon>event</mat-icon>{{ offer.deadline }}</span>
+      </div>
+      <div class="offer-actions">
+        <button class="btn-close-offer" *ngIf="offer.status === 'OPEN'"
+          (click)="closeOffer(offer.id); $event.stopPropagation()">
+          <mat-icon>lock</mat-icon> Fermer
+        </button>
+        <button class="btn-delete-offer"
+          (click)="deleteOffer(offer.id); $event.stopPropagation()">
+          <mat-icon>delete_outline</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="!loading && offers.length === 0">
+      <mat-icon>work_off</mat-icon>
+      <p>Aucune offre d'emploi</p>
+    </div>
+  </div>
+
+  <div class="applications-panel">
+    <div class="panel-header">
+      <h3>Candidatures</h3>
+      <span class="count-badge">{{ applications.length }}</span>
+    </div>
+
+    <div class="empty-state" *ngIf="!selectedOfferId">
+      <mat-icon>touch_app</mat-icon>
+      <p>Sélectionnez une offre pour voir les candidatures</p>
+    </div>
+
+    <div class="application-card" *ngFor="let app of applications">
+      <div class="app-header">
+        <div class="app-avatar">
+          {{ app.employee?.firstName?.charAt(0) }}{{ app.employee?.lastName?.charAt(0) }}
+        </div>
+        <div class="app-info">
+          <h4>{{ app.employee?.firstName }} {{ app.employee?.lastName }}</h4>
+          <p>Postulé le {{ app.appliedAt }}</p>
+        </div>
+        <span class="badge" [ngClass]="getAppStatusBadge(app.status)">
+          {{ getAppStatusLabel(app.status) }}
+        </span>
+      </div>
+      <div class="app-motivation" *ngIf="app.motivation">
+        <p>{{ app.motivation }}</p>
+      </div>
+      <div class="app-actions" *ngIf="app.status === 'PENDING'">
+        <button class="btn-accept" (click)="acceptApplication(app.id)">
+          <mat-icon>check_circle</mat-icon> Accepter
+        </button>
+        <button class="btn-reject" (click)="rejectApplication(app.id)">
+          <mat-icon>cancel</mat-icon> Rejeter
+        </button>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="selectedOfferId && applications.length === 0">
+      <mat-icon>inbox</mat-icon>
+      <p>Aucune candidature pour cette offre</p>
+    </div>
+  </div>
+</div>

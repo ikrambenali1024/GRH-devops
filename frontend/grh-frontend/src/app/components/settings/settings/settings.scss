@@ -1,0 +1,220 @@
+.page-header {
+  margin-bottom: 24px;
+  h1 { font-size: 22px; font-weight: 600; color: var(--text-primary); }
+  p { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
+}
+
+.settings-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 20px;
+}
+
+.settings-sidebar {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px;
+  height: fit-content;
+}
+
+.settings-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-secondary);
+  transition: all 0.15s;
+  margin-bottom: 2px;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+  &:hover { background: #f9fafb; color: var(--text-primary); }
+
+  &.active {
+    background: #eff6ff;
+    color: #2563eb;
+    font-weight: 500;
+  }
+}
+
+.profile-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 24px;
+}
+
+.profile-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #1e2640;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.info-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: 140px;
+}
+
+.info-value {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.form-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 480px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.input-box {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 0 12px;
+  background: #f9fafb;
+  transition: all 0.15s;
+
+  &:focus-within {
+    border-color: #1e2640;
+    background: white;
+  }
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; color: #9ca3af; flex-shrink: 0; }
+
+  input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 11px 10px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    outline: none;
+
+    &::placeholder { color: #9ca3af; }
+  }
+}
+
+.success-alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  color: #16a34a;
+  font-size: 13px;
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+}
+
+.error-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 13px;
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+}
+
+.btn-save {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 20px;
+  background: #1e2640;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  width: fit-content;
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+  &:hover { background: #2d3a5c; }
+}
+
+.count-badge {
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: #f3f4f6;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 32px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.spin { animation: spin 1s linear infinite; }
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
