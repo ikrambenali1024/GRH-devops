@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: grh-postgres
+    environment:
+      POSTGRES_DB: grh-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yoam
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - grh-network
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: grh-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/grh-db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: yoam
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+    networks:
+      - grh-network
+
+  frontend:
+    build:
+      context: ../frontend/grh-frontend
+      dockerfile: Dockerfile
+    container_name: grh-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - grh-network
+
+networks:
+  grh-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
