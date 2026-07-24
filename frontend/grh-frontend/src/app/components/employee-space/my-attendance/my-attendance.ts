@@ -26,7 +26,7 @@ export class MyAttendanceComponent implements OnInit {
 
   loadMyAttendances(): void {
     this.loading = true;
-    fetch('http://localhost:8081/api/attendances/my-attendances', {
+    fetch('/api/attendances/my-attendances', {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
@@ -55,7 +55,7 @@ export class MyAttendanceComponent implements OnInit {
 
   checkIn(): void {
     this.checkingIn = true;
-    fetch('http://localhost:8081/api/attendances/my-checkin', {
+    fetch('/api/attendances/my-checkin', {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -74,7 +74,7 @@ export class MyAttendanceComponent implements OnInit {
 
   checkOut(): void {
     this.checkingOut = true;
-    fetch('http://localhost:8081/api/attendances/my-checkout', {
+    fetch('/api/attendances/my-checkout', {
       method: 'PATCH',
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')

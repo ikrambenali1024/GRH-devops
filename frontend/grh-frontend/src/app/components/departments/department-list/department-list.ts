@@ -28,7 +28,7 @@ export class DepartmentListComponent implements OnInit {
   }
 
   loadDepartments(): void {
-    fetch('http://localhost:8081/api/departments', {
+    fetch('/api/departments', {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
@@ -42,7 +42,7 @@ export class DepartmentListComponent implements OnInit {
   }
 
   createDepartment(): void {
-    fetch('http://localhost:8081/api/departments', {
+    fetch('/api/departments', {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
@@ -60,7 +60,7 @@ export class DepartmentListComponent implements OnInit {
 
   deleteDepartment(id: number): void {
     if (confirm('Supprimer ce département ?')) {
-      fetch(`http://localhost:8081/api/departments/${id}`, {
+      fetch(`/api/departments/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')

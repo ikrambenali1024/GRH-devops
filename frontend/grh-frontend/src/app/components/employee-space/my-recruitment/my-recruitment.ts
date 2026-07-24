@@ -33,7 +33,7 @@ export class MyRecruitmentComponent implements OnInit {
   }
 
   loadOffers(): void {
-    fetch('http://localhost:8081/api/recruitment/offers/open', { headers: this.headers })
+    fetch('/api/recruitment/offers/open', { headers: this.headers })
       .then(r => r.json())
       .then(data => {
         this.offers = data;
@@ -48,7 +48,7 @@ export class MyRecruitmentComponent implements OnInit {
   }
 
   loadMyApplications(): void {
-    fetch('http://localhost:8081/api/recruitment/my-applications', { headers: this.headers })
+    fetch('/api/recruitment/my-applications', { headers: this.headers })
       .then(r => r.json())
       .then(data => {
         this.myApplications = data;
@@ -65,7 +65,7 @@ export class MyRecruitmentComponent implements OnInit {
     this.applying = true;
     this.errorMessage = '';
 
-    fetch(`http://localhost:8081/api/recruitment/offers/${this.selectedOffer.id}/apply`, {
+    fetch(`/api/recruitment/offers/${this.selectedOffer.id}/apply`, {
       method: 'POST',
       headers: { ...this.headers, 'Content-Type': 'application/json' },
       body: JSON.stringify({ motivation: this.motivation })

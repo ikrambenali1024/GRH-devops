@@ -32,7 +32,7 @@ leaveBalance = 0;
 
   ngOnInit(): void {
     this.loadMyLeaves();
-    fetch('http://localhost:8081/api/employees/my-profile', {
+    fetch('/api/employees/my-profile', {
   headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
 })
 .then(r => r.json())
@@ -44,7 +44,7 @@ leaveBalance = 0;
 
   loadMyLeaves(): void {
     this.loading = true;
-    fetch('http://localhost:8081/api/leave-requests/my-leaves', {
+    fetch('/api/leave-requests/my-leaves', {
       headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
     })
     .then(r => r.json())
@@ -75,7 +75,7 @@ leaveBalance = 0;
     this.submitting = true;
     this.errorMessage = '';
 
-    fetch('http://localhost:8081/api/leave-requests/my-leaves', {
+    fetch('/api/leave-requests/my-leaves', {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token'),

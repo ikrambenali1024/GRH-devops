@@ -44,7 +44,7 @@ export class SettingsComponent implements OnInit {
 
   loadUsers(): void {
     this.usersLoading = true;
-    fetch('http://localhost:8081/api/users', {
+    fetch('/api/users', {
       headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
     })
     .then(r => r.json())
@@ -80,7 +80,7 @@ export class SettingsComponent implements OnInit {
 
     this.passwordLoading = true;
 
-    fetch('http://localhost:8081/api/users/change-password', {
+    fetch('/api/users/change-password', {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token'),

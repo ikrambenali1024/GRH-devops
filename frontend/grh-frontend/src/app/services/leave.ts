@@ -8,7 +8,7 @@ import { LeaveRequest } from '../models/leave.model';
 })
 export class LeaveService {
 
-  private apiUrl = 'http://localhost:8081/api/leave-requests';
+  private apiUrl = '/api/leave-requests';
 
   constructor(private http: HttpClient) {}
 

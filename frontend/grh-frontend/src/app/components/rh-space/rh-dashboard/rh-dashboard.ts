@@ -34,7 +34,7 @@ export class RhDashboardComponent implements OnInit {
   loadData(): void {
     const headers = { 'Authorization': 'Bearer ' + localStorage.getItem('token') };
 
-    fetch('http://localhost:8081/api/employees', { headers })
+    fetch('/api/employees', { headers })
       .then(r => r.json())
       .then(data => {
         this.totalEmployees = data.length;
@@ -43,7 +43,7 @@ export class RhDashboardComponent implements OnInit {
         this.cdr.detectChanges();
       });
 
-    fetch('http://localhost:8081/api/attendances', { headers })
+    fetch('/api/attendances', { headers })
       .then(r => r.json())
       .then(data => {
         const today = new Date().toISOString().split('T')[0];

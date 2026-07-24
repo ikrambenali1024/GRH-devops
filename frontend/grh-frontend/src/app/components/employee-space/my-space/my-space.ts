@@ -37,7 +37,7 @@ export class MySpaceComponent implements OnInit {
   loadData(): void {
     const headers = { 'Authorization': 'Bearer ' + localStorage.getItem('token') };
 
-    fetch('http://localhost:8081/api/attendances/my-attendances', { headers })
+    fetch('/api/attendances/my-attendances', { headers })
       .then(r => r.json())
       .then(data => {
         this.myAttendances = data;
@@ -49,7 +49,7 @@ export class MySpaceComponent implements OnInit {
         this.cdr.detectChanges();
       });
 
-    fetch('http://localhost:8081/api/leave-requests/my-leaves', { headers })
+    fetch('/api/leave-requests/my-leaves', { headers })
   .then(r => r.json())
   .then(data => {
     this.myLeaves = data;
@@ -57,7 +57,7 @@ export class MySpaceComponent implements OnInit {
     this.approvedLeavesCount = data.filter((l: any) => l.status === 'APPROVED').length;
     this.cdr.detectChanges();
   });
-  fetch('http://localhost:8081/api/employees/my-profile', { headers })
+  fetch('/api/employees/my-profile', { headers })
   .then(r => r.json())
   .then(data => {
     this.leaveBalance = data.leaveBalance ?? 0;

@@ -8,7 +8,7 @@ import { Attendance } from '../models/attendance.model';
 })
 export class AttendanceService {
 
-  private apiUrl = 'http://localhost:8081/api/attendances';
+  private apiUrl = '/api/attendances';
 
   constructor(private http: HttpClient) {}
 

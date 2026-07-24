@@ -78,7 +78,7 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   loadDepartments(): void {
-    fetch('http://localhost:8081/api/departments', {
+    fetch('/api/departments', {
       headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
     })
     .then(r => r.json())
@@ -106,7 +106,7 @@ export class EmployeeFormComponent implements OnInit {
     this.employeeService.create(this.employee).subscribe({
       next: (createdEmployee) => {
         // Étape 2 : créer le compte user et lier à l'employé
-        fetch('http://localhost:8081/api/auth/register', {
+        fetch('/api/auth/register', {
           method: 'POST',
           headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token'),

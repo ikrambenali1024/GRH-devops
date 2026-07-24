@@ -40,7 +40,7 @@ export class RecruitmentComponent implements OnInit {
 
   loadOffers(): void {
     this.loading = true;
-    fetch('http://localhost:8081/api/recruitment/offers', { headers: this.headers })
+    fetch('/api/recruitment/offers', { headers: this.headers })
       .then(r => r.json())
       .then(data => {
         this.offers = data;
@@ -51,7 +51,7 @@ export class RecruitmentComponent implements OnInit {
 
   loadApplications(offerId: number): void {
     this.selectedOfferId = offerId;
-    fetch(`http://localhost:8081/api/recruitment/offers/${offerId}/applications`, {
+    fetch(`/api/recruitment/offers/${offerId}/applications`, {
       headers: this.headers
     })
     .then(r => r.json())
@@ -62,7 +62,7 @@ export class RecruitmentComponent implements OnInit {
   }
 
   createOffer(): void {
-    fetch('http://localhost:8081/api/recruitment/offers', {
+    fetch('/api/recruitment/offers', {
       method: 'POST',
       headers: { ...this.headers, 'Content-Type': 'application/json' },
       body: JSON.stringify(this.newOffer)
@@ -78,7 +78,7 @@ export class RecruitmentComponent implements OnInit {
   }
 
   closeOffer(id: number): void {
-    fetch(`http://localhost:8081/api/recruitment/offers/${id}/close`, {
+    fetch(`/api/recruitment/offers/${id}/close`, {
       method: 'PATCH',
       headers: this.headers
     })
@@ -87,7 +87,7 @@ export class RecruitmentComponent implements OnInit {
 
   deleteOffer(id: number): void {
     if (confirm('Supprimer cette offre ?')) {
-      fetch(`http://localhost:8081/api/recruitment/offers/${id}`, {
+      fetch(`/api/recruitment/offers/${id}`, {
         method: 'DELETE',
         headers: this.headers
       })
@@ -102,7 +102,7 @@ export class RecruitmentComponent implements OnInit {
   }
 
   acceptApplication(id: number): void {
-    fetch(`http://localhost:8081/api/recruitment/applications/${id}/accept`, {
+    fetch(`/api/recruitment/applications/${id}/accept`, {
       method: 'PATCH',
       headers: this.headers
     })
@@ -110,7 +110,7 @@ export class RecruitmentComponent implements OnInit {
   }
 
   rejectApplication(id: number): void {
-    fetch(`http://localhost:8081/api/recruitment/applications/${id}/reject`, {
+    fetch(`/api/recruitment/applications/${id}/reject`, {
       method: 'PATCH',
       headers: this.headers
     })
